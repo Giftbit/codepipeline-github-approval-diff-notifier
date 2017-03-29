@@ -1,0 +1,5 @@
+*.iml
+.idea/
+dist/
+node_modules/
+sample-events/
