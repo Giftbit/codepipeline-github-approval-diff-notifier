@@ -1,5 +1,5 @@
 {
-  "name": "",
+  "name": "codepipeline-github-approval-diff-notifier",
   "version": "1.0.0",
   "description": "",
   "scripts": {
@@ -18,7 +18,7 @@
   "bugs": {
     "url": ""
   },
-  "homepage": "https://github.com/giftbit/activity-aware-ids-aws#readme",
+  "homepage": "https://github.com/giftbit/codepipeline-github-approval-diff-notifier#readme",
   "devDependencies": {
     "@types/aws-lambda": "0.0.7",
     "@types/node": "^7.0.7",
