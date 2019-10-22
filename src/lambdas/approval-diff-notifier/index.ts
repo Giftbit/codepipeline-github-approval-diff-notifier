@@ -1,5 +1,3 @@
-import "babel-polyfill";
-
 import * as aws from "aws-sdk";
 import * as awslambda from "aws-lambda";
 import {SNSEvent} from "../../common/aws-lambda";
@@ -18,18 +16,8 @@ const codePipeline = new aws.CodePipeline();
 const s3 = new aws.S3();
 const messageSender = new MessageSender(snsTopic);
 
-export function handler(event: any, context: awslambda.Context, callback: awslambda.Callback): void {
+export async function handler(event: SNSEvent): Promise<string> {
     console.log("event", JSON.stringify(event, null, 2));
-    handlerAsync(event)
-        .then(res => {
-            callback(undefined, res);
-        }, err => {
-            console.error("An unhandled Error occurred while executing the handler", JSON.stringify(err, null, 2));
-            callback(err);
-        });
-}
-
-export async function handlerAsync(event: SNSEvent): Promise<string> {
     const message = event.Records[0].Sns.Message;
 
     const approvalNotification = JSON.parse(message) as CodePipelineApprovalNotificationRecord;

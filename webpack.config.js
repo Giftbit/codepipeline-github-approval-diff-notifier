@@ -14,7 +14,7 @@ console.log(`Building ${functionsToBuild.join(", ")}`);
 
 module.exports = functionsToBuild
     .map(fxn => ({
-        entry: `./src/lambdas/${fxn}/`,
+        entry: path.join(__dirname, 'src', 'lambdas', fxn, 'index.ts'),
         target: 'node',
         node: {
             // Allow these globals.
@@ -22,7 +22,7 @@ module.exports = functionsToBuild
             __dirname: false
         },
         output: {
-            path: `./dist/${fxn}/`,
+            path: path.join(__dirname, 'dist', fxn),
             filename: 'index.js',
             libraryTarget: 'commonjs2'
         },
@@ -35,21 +35,44 @@ module.exports = functionsToBuild
         },
         bail: true,
         resolve: {
-            extensions: ['', '.webpack.js', '.web.js', '.ts', '.tsx', '.js']
+            extensions: ['.webpack.js', '.web.js', '.ts', '.tsx', '.js']
         },
         module: {
-            loaders: [
+            rules: [
                 {
                     test: /\.js$/,
-                    loader: 'babel-loader?presets[]=es2015&compact=false'
+                    use: [
+                        {
+                            loader: 'babel-loader',
+                            options: {
+                                presets: [['@babel/env', {targets: {node: '10.16'}}]],
+                                plugins: [],
+                                compact: false,
+                                babelrc: false,
+                                cacheDirectory: true
+                            }
+                        }
+                    ]
+                },
+                {
+                    test: /\.ts(x?)$/,
+                    use: [
+                        {
+                            loader: 'babel-loader',
+                            options: {
+                                presets: [['@babel/env', {targets: {node: '10.16'}}]],
+                                plugins: [],
+                                compact: false,
+                                babelrc: false,
+                                cacheDirectory: true
+                            }
+                        },
+                        'ts-loader'
+                    ]
                 },
                 {
                     test: /\.json$/,
-                    loader: 'json-loader'
-                },
-                {
-                    test: /\.ts$/,
-                    loader: 'babel-loader?presets[]=es2015&compact=false!ts-loader'
+                    use: ['json-loader']
                 }
             ]
         },

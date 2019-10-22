@@ -9,18 +9,8 @@ const stageRevisionStatePrefix = "StageState";
 const codepipeline = new aws.CodePipeline();
 const s3 = new aws.S3();
 
-export function handler(event: any, context: awslambda.Context, callback: awslambda.Callback): void {
+export async function handler(event: CodePipelineEvent, context: awslambda.Context): Promise<string> {
     console.log("event", JSON.stringify(event, null, 2));
-    handlerAsync(event, context)
-        .then(res => {
-            callback(undefined, res);
-        }, err => {
-            console.error("An unhandled Error occurred while executing the handler", JSON.stringify(err, null, 2));
-            callback(err);
-        });
-}
-
-export async function handlerAsync(event: CodePipelineEvent, context: awslambda.Context): Promise<string> {
     const jobId = event["CodePipeline.job"].id;
 
     try {

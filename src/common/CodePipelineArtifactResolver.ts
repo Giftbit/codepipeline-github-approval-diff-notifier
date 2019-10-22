@@ -1,5 +1,3 @@
-import "babel-polyfill";
-
 import * as aws from "aws-sdk";
 
 const codePipeline = new aws.CodePipeline();
